@@ -9,10 +9,7 @@ def basic():
 
 def build():
     base(dev=True)
-    # basic()
-    install.conda()
-    install.python()
-    # runtime.expose(envd_port=8000, host_port=8000, service="vits")
+    basic()
 
 
 def serving():
