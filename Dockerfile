@@ -13,6 +13,8 @@ ARG CONDA_VERSION=py310_22.11.1-1
 RUN apt update && \
     apt install -y --no-install-recommends \
         wget \
+        espeak \
+        build-essential \
         ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
