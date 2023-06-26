@@ -3,6 +3,7 @@
 
 def basic():
     install.cuda(version="11.6.2")
+    install.apt_packages(name=["build-essential", "espeak"])
     install.python()
     install.python_packages(requirements="requirements.txt")
 

@@ -1,6 +1,7 @@
 import torch  # type: ignore
 
 from mosec import Server, Worker, get_logger
+from mosec.mixin import MsgpackMixin
 
 from vits import utils, models
 from vits.commons import intersperse
@@ -17,7 +18,7 @@ def get_text(text, hps):
     return text_norm
 
 
-class VITS(Worker):
+class VITS(MsgpackMixin, Worker):
     def __init__(self):
         self.hps = utils.get_hparams_from_file("vits/configs/vctk_base.json")
         self.model = models.SynthesizerTrn(
@@ -38,13 +39,20 @@ class VITS(Worker):
         x_tst_lengths = torch.LongTensor([x_tst.size(0)]).to(self.device)
         sid = torch.LongTensor([4]).to(self.device)
         audio = self.model.infer(
-            x_tst, x_tst_lengths, sid=sid, noise_scale=0.667, noise_scale_w=0.8, length_scale=1
+            x_tst,
+            x_tst_lengths,
+            sid=sid,
+            noise_scale=0.667,
+            noise_scale_w=0.8,
+            length_scale=1,
         )[0][0, 0].data
         if self.device == "cuda":
             audio = audio.cpu()
+        array = audio.numpy()
         return {
-            "audio": audio.float().numpy().tolist(),
+            "audio": array.tobytes(),
             "sample_rate": self.hps.data.sampling_rate,
+            "shape": array.shape,
         }
 
 

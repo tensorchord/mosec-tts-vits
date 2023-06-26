@@ -63,12 +63,7 @@ RUN mkdir -p /workspace
 
 COPY main.py workspace/
 
-WORKDIR workspace
-
-RUN python main.py --dry-run
-
-# disable huggingface update check (could be very slow)
-ENV HF_HUB_OFFLINE=true
+WORKDIR /workspace
 
 ENTRYPOINT [ "python", "main.py" ]
 # Set inference timeout to 60s
