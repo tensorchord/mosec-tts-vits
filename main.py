@@ -27,7 +27,7 @@ class VITS(Worker):
             n_speakers=self.hps.data.n_speakers,
             **self.hps.model,
         )
-        utils.load_checkpoint("../pretrained_vctk.pth", self.model, None)
+        utils.load_checkpoint("models/pretrained_vctk.pth", self.model, None)
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model = self.model.to(self.device)
         self.model.eval()
@@ -50,5 +50,5 @@ class VITS(Worker):
 
 if __name__ == "__main__":
     server = Server()
-    server.append_worker(VITS, num=1)
+    server.append_worker(VITS, num=5)
     server.run()
