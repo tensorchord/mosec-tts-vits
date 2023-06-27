@@ -36,7 +36,7 @@ class VITS(MsgpackMixin, Worker):
     def forward(self, data: str):
         stn_tst = get_text(data["msg"], self.hps)
         x_tst = stn_tst.unsqueeze(0).to(self.device)
-        x_tst_lengths = torch.LongTensor([x_tst.size(0)]).to(self.device)
+        x_tst_lengths = torch.LongTensor([x_tst.size(1)]).to(self.device)
         sid = torch.LongTensor([4]).to(self.device)
         audio = self.model.infer(
             x_tst,
